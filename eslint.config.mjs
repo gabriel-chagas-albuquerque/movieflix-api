@@ -30,7 +30,7 @@ export default defineConfig([
       "keyword-spacing": "error",
 
       // Para TypeScript, desabilitar a regra JS e usar a do TS
-      "no-unused-vars": "off",
+      "no-unused-vars": "on",
       "@typescript-eslint/no-unused-vars": [
         "error",
         { argsIgnorePattern: "^_" },

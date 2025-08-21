@@ -4,21 +4,26 @@ const router = express.Router();
 const prisma = new PrismaClient();
 
 router.get("/", async (req, res) => {
-  const movies = await prisma.movie.findMany({
-    orderBy: {
-      title: "asc",
-    },
-    include: {
-      genres: true,
-      languages: true,
-    },
-    omit: {
-      genre_id: true,
-      language_id: true,
-    },
-  });
-  res.json(movies);
+  try {
+    const movies = await prisma.movie.findMany({
+      orderBy: {
+        title: "asc",
+      },
+      include: {
+        genres: true,
+        languages: true,
+      },
+      omit: {
+        genre_id: true,
+        language_id: true,
+      },
+    });
+    return res.status(200).json(movies);
+  } catch (error) {
+    return res.status(500).json({ message: "Houve um erro ao carregar os filmes" });
+  }
 });
+
 router.post("/", async (req, res) => {
   try {
     const { title, genre_id, language_id, oscar_count, release_date } =
