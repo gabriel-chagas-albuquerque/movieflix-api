@@ -20,7 +20,41 @@ router.get("/", async (req, res) => {
     });
     return res.status(200).json(movies);
   } catch (error) {
-    return res.status(500).json({ message: "Houve um erro ao carregar os filmes" });
+    return res
+      .status(500)
+      .json({ message: "Houve um erro ao carregar os filmes" });
+  }
+});
+
+router.get("/:genreName", async (req, res) => {
+  try {
+    const genreName = req.params.genreName;
+    const moviesFilteredByGenre = await prisma.movie.findMany({
+      where: {
+        genres: {
+          name: {
+            equals: genreName,
+            mode: "insensitive",
+          },
+        },
+      },
+      include: {
+        genres: true,
+        languages:true,
+      }
+    });
+
+    if (!moviesFilteredByGenre) {
+      return res
+        .status(404)
+        .json({ message: "Não existe filmes com esse gênero" });
+    }
+
+    return res.status(200).json(moviesFilteredByGenre);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Houve um erro na filtragem dos filmes" });
   }
 });
 
@@ -118,4 +152,28 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+router.delete("/:id", async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    const verificaExistenciaId = await prisma.movie.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!verificaExistenciaId) {
+      return res.status(404).json({ message: "O filme não existe" });
+    }
+
+    await prisma.movie.delete({
+      where: {
+        id,
+      },
+    });
+
+    return res.status(200).json({ message: "Filme deletado com sucesso" });
+  } catch (error) {
+    return res.status(500).json({ message: "Erro ao deletar o filme" });
+  }
+});
 export default router;
