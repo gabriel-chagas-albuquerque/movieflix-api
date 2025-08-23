@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "npx tsx watch src/server.ts",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "start": "node dist/src/server.js",
+    "build":"tsc"
   },
   "keywords": [],
   "author": "",
