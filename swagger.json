@@ -23,6 +23,9 @@
                 }
               }
             }
+          },
+          "500":{
+            "description": "Falha ao carregar os filmes"
           }
         }
       }
@@ -51,6 +54,43 @@
               }
             }
           }
+        },
+        "responses":{
+            "200":{
+                "description": "Filme atualizado com sucesso"
+            },
+            "404": {
+                "description": "Filme não encontrado"
+            },
+            "500": {
+                "description": "Falha ao atualizar o filme"
+            }
+        }
+      },
+      "delete": {
+        "tags":["Movie"],
+        "summary": "Remover um filme",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID do filme a ser removido",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+                "responses":{
+            "200":{
+                "description": "Filme removido com sucesso"
+            },
+            "404": {
+                "description": "Filme não encontrado"
+            },
+            "500": {
+                "description": "Falha ao remover o filme"
+            }
         }
       }
     }
